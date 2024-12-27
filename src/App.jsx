@@ -1,7 +1,6 @@
 import reactLogo from './assets/react.svg'
 import './App.css'
-import { useState, useEffect } from 'react';
-
+import { useState, useEffect } from "react";
 import {
   Authenticator,
   Button,
@@ -29,8 +28,7 @@ const client = generateClient({
   authMode: "userPool",
 });
 
-
-function App() {
+export default function App() {
   const [notes, setNotes] = useState([]);
 
   useEffect(() => {
@@ -38,18 +36,18 @@ function App() {
   }, []);
 
   async function fetchNotes() {
-    const { data: notes} = await client.models.Note.list()
+    const { data: notes } = await client.models.Note.list();
     await Promise.all(
-      notes.map( async (note) => {
+      notes.map(async (note) => {
         if (note.image) {
           const linkToStorageFile = await getUrl({
-            path: ({ identityId }) => `media/${identityId}/${note.image}`, 
+            path: ({ identityId }) => `media/${identityId}/${note.image}`,
           });
           console.log(linkToStorageFile.url);
           note.image = linkToStorageFile.url;
         }
         return note;
-       })
+      })
     );
     console.log(notes);
     setNotes(notes);
@@ -103,7 +101,7 @@ function App() {
           width="70%"
           margin="0 auto"
         >
-          <Heading level={1}>My Notes App!</Heading>
+          <Heading level={1}>My Notes App</Heading>
           <View as="form" margin="3rem 0" onSubmit={createNote}>
             <Flex
               direction="column"
@@ -187,5 +185,3 @@ function App() {
     </Authenticator>
   );
 }
-
-export default App
